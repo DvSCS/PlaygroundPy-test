@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Site Python</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #306998; /* Azul do Python */
+            color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #ffde57; /* Amarelo do Python */
+        }
+
+        textarea {
+            width: 80%;
+            min-height: 200px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+            border: 2px solid #ced4da;
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: monospace;
+            font-size: 16px;
+            background-color: #f0f0f0; /* Cinza claro */
+            color: #306998; /* Azul do Python */
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 30px;
+            background-color: #ffde57; /* Amarelo do Python */
+            color: #306998; /* Azul do Python */
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #f9c74f; /* Amarelo mais claro */
+        }
+
+        #output {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            color: #306998; /* Azul do Python */
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        #url-input {
+            width: 80%;
+            margin: 20px auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Executar C¨®digo Python</h1>
+    <textarea id="python-code" placeholder="Insira seu c¨®digo Python aqui..."></textarea>
+    <button id="run-button">Executar</button>
+    <div id="output"></div>
+    <input type="text" id="url-input" readonly style="width: 80%; margin: 20px auto; display: block;" />
+
+    <script>
+        document.getElementById('run-button').addEventListener('click', function() {
+            var code = document.getElementById('python-code').value;
+            var output = document.getElementById('output');
+
+            fetch('/execute', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code: code }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                output.innerText = data;
+                // Exibe a URL com o ID do resultado
+                document.getElementById('url-input').value = window.location.origin + '/result?id=' + data.result_id;
+            })
+            .catch(error => {
+                output.innerText = 'Erro ao executar o c¨®digo: ' + error.message;
+            });
+        });
+    </script>
+</body>
+</html>
