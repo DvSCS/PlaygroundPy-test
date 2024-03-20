@@ -62,6 +62,19 @@
             line-height: 1.6;
         }
 
+        #token-input {
+            width: 80%;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+            border: 2px solid #ced4da;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #f0f0f0; /* Cinza claro */
+            color: #306998; /* Azul do Python */
+        }
+
         #url-input {
             width: 80%;
             margin: 20px auto;
@@ -70,11 +83,12 @@
     </style>
 </head>
 <body>
-    <h1>Executar C¨®digo Python</h1>
-    <textarea id="python-code" placeholder="Insira seu c¨®digo Python aqui..."></textarea>
+    <h1>Executar Código Python</h1>
+    <textarea id="python-code" placeholder="Insira seu código Python aqui..."></textarea>
     <button id="run-button">Executar</button>
     <div id="output"></div>
-    <input type="text" id="url-input" readonly style="width: 80%; margin: 20px auto; display: block;" />
+    <input type="text" id="token-input" placeholder="Insira o token de compartilhamento..." />
+    <input type="text" id="url-input" readonly />
 
     <script>
         document.getElementById('run-button').addEventListener('click', function() {
@@ -90,12 +104,12 @@
             })
             .then(response => response.json())
             .then(data => {
-                output.innerText = data;
-                // Exibe a URL com o ID do resultado
-                document.getElementById('url-input').value = window.location.origin + '/result?id=' + data.result_id;
+                output.innerText = data.output;
+                // Exibe a URL com o token de compartilhamento
+                document.getElementById('url-input').value = window.location.origin + '/result?token=' + data.token;
             })
             .catch(error => {
-                output.innerText = 'Erro ao executar o c¨®digo: ' + error.message;
+                output.innerText = 'Erro ao executar o código: ' + error.message;
             });
         });
     </script>
